@@ -409,6 +409,16 @@ helpers.for_each_dao(function(kong_config)
         }
         assert.falsy(err)
         assert.is_table(rows)
+	assert.equals(1, #rows)
+
+        local rows, err, _ = apis:find_page {
+          name = "fixture_2",
+          https_only = "true"
+        }
+        assert.falsy(err)
+        assert.is_table(rows)
+	assert.equals(0, #rows)
+
       end)
       describe("errors", function()
         it("handle invalid arg", function()
