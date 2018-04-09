@@ -718,23 +718,26 @@ return {
   {
     name = "2018-03-27-125400_fill_in_server_names_ids",
     up = function(_, _, dao)
+      local fmt = string.format
+
       local rows, err = dao.db:query([[
         SELECT * FROM server_names;
       ]])
       if err then
         return err
       end
+      local sql_buffer = { "BEGIN;" }
+      local len = #rows
+      for i = 1, len do
+        sql_buffer[i + 1] = fmt("UPDATE server_names SET id = '%s' WHERE name = '%s';",
+                                utils.uuid(),
+                                rows[i].name)
+      end
+      sql_buffer[len + 2] = "COMMIT;"
 
-      local fmt = string.format
-
-      for _, row in ipairs(rows) do
-        local sql = fmt("UPDATE server_names SET id = '%s' WHERE name = '%s';",
-                        utils.uuid(),
-                        row.name)
-        local _, err = dao.db:query(sql)
-        if err then
-          return err
-        end
+      local _, err = dao.db:query(table.concat(sql_buffer))
+      if err then
+        return err
       end
     end,
     down = nil

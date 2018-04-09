@@ -10,8 +10,10 @@ local function parse_name_list(input, errors)
   local name_list
   if type(input) == "string" then
     name_list = utils.split(input, ",")
+
   elseif type(input) == "table" then
     name_list = utils.shallow_copy(input)
+
   elseif input == ngx.null then
     name_list = {}
   end

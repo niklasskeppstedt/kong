@@ -63,7 +63,7 @@ function _ServerNames:check_list_is_new_or_in_cert(cert_pk, name_list)
       return nil, err, err_t
     end
     if row and row.certificate.id ~= cert_pk.id then
-      local msg = "Server Name '" .. row.name ..
+      local msg = "Server name '" .. row.name ..
                   "' already associated with existing " ..
                   "certificate (" .. row.certificate.id .. ")"
       local err_t = self.errors:conflicting_input(msg)

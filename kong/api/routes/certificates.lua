@@ -1,9 +1,9 @@
 local endpoints   = require "kong.api.endpoints"
 local utils       = require "kong.tools.utils"
 
+
 local function get_cert_by_server_name_or_id(self, db, helpers)
   local id = self.params.certificates
-
   if not utils.is_valid_uuid(id) then
     local cert, _, err_t = db.certificates:select_by_server_name(id)
     if err_t then
